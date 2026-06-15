@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pirus — герой с 3D-кубом (белый)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/three@0.137.0/build/three.min.js"></script>
+<style>
+  :root{--bg:#ffffff;--ink:#0d1e2e;--muted:#5f696d;--line:rgba(13,30,46,.12);
+        --accent:#69dcdc;--accent-deep:#377b88;--ease:cubic-bezier(.16,1,.3,1);}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Golos Text',system-ui,sans-serif;background:var(--bg);color:var(--ink);
+       -webkit-font-smoothing:antialiased;overflow:hidden;height:100svh;}
+  body::before{content:"";position:fixed;inset:0;z-index:0;
+       background:radial-gradient(60% 55% at 55% 42%,rgba(105,220,220,.16),transparent 70%);pointer-events:none;}
+  #c{position:fixed;inset:0;z-index:2;display:block;}
+
+  .top{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
+       padding:30px clamp(20px,4vw,56px);pointer-events:none;}
+  .top>*{pointer-events:auto;}
+  .logo{font-weight:900;font-size:clamp(1.8rem,3.2vw,2.6rem);letter-spacing:-.05em;}
+  .logo .d{color:var(--accent-deep);}
+  .top-r{display:flex;align-items:center;gap:14px;}
+  .pill{display:inline-flex;align-items:center;height:50px;padding:0 26px;border-radius:999px;
+        background:var(--accent);color:var(--ink);font-weight:700;font-size:15px;text-decoration:none;
+        box-shadow:0 10px 30px rgba(105,220,220,.45);transition:transform .2s var(--ease),box-shadow .25s var(--ease);}
+  .pill:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(105,220,220,.6);}
+  .burger{width:50px;height:50px;border:1px solid var(--line);border-radius:50%;display:flex;flex-direction:column;
+          align-items:center;justify-content:center;gap:5px;cursor:pointer;background:rgba(13,30,46,.02);}
+  .burger span{width:17px;height:2px;background:var(--ink);}
+
+  .social{position:fixed;right:clamp(14px,2vw,26px);top:50%;transform:translateY(-50%) rotate(180deg);
+          writing-mode:vertical-rl;z-index:40;font-size:13px;letter-spacing:.08em;color:var(--muted);font-weight:600;}
+  .social a{color:var(--muted);text-decoration:none;}.social a:hover{color:var(--accent-deep);}
+
+  .mark{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:1;pointer-events:none;}
+  .mark span{font-weight:900;font-size:clamp(14rem,32vw,38rem);letter-spacing:-.06em;line-height:1;
+             color:transparent;-webkit-text-stroke:1px rgba(13,30,46,.05);white-space:nowrap;}
+
+  .headline{position:fixed;left:clamp(20px,4vw,56px);bottom:clamp(70px,11vw,120px);right:clamp(20px,4vw,56px);z-index:30;pointer-events:none;}
+  .headline h1{font-size:clamp(2.6rem,9vw,8.5rem);font-weight:900;line-height:.92;letter-spacing:-.05em;max-width:15ch;}
+  .headline h1 .ac{color:var(--accent-deep);}
+  .headline p{margin-top:22px;color:var(--muted);font-size:clamp(1rem,1.8vw,1.4rem);font-weight:500;max-width:46ch;}
+
+  .hint{position:fixed;bottom:30px;left:clamp(20px,4vw,56px);color:var(--muted);font-size:12px;z-index:30;}
+  @media (max-width:820px){.social{display:none;}.headline{bottom:110px;}}
+</style></head><body>
+
+<div class="mark"><span>pirus.</span></div>
+<canvas id="c"></canvas>
+
+<div class="top">
+  <div class="logo">pirus<span class="d">.</span></div>
+  <div class="top-r">
+    <a href="#" class="pill">Оставить заявку</a>
+    <div class="burger"><span></span><span></span><span></span></div>
+  </div>
+</div>
+
+<div class="social">Мы в соцсетях &nbsp;—&nbsp; <a href="#">TG</a> &nbsp;/&nbsp; <a href="#">VK</a> &nbsp;/&nbsp; <a href="#">IG</a></div>
+
+<div class="headline">
+  <h1>Продвижение и <span class="ac">разработка</span> сайтов</h1>
+  <p>Преобразим ваш сайт в источник дохода.</p>
+</div>
+<div class="hint">Поводи мышкой — куб плывёт за тобой</div>
+
+<script>
+(function(){
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var canvas=document.getElementById('c');
+  var renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  var scene=new THREE.Scene();
+  var camera=new THREE.PerspectiveCamera(35,innerWidth/innerHeight,0.1,100);
+  camera.position.set(0,0,6.4);
+  function resize(){renderer.setSize(innerWidth,innerHeight);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();}
+  resize();addEventListener('resize',resize);
+
+  // цветная среда — бирюзовые отражения (переливы)
+  function faceCanvas(a,b,c){var cv=document.createElement('canvas');cv.width=cv.height=128;var x=cv.getContext('2d');
+    var g=x.createLinearGradient(0,0,128,128);g.addColorStop(0,a);g.addColorStop(.5,b);g.addColorStop(1,c);
+    x.fillStyle=g;x.fillRect(0,0,128,128);return cv;}
+  var envTex=new THREE.CubeTexture([
+    faceCanvas('#69dcdc','#377b88','#0d1e2e'),faceCanvas('#bff3ee','#69dcdc','#377b88'),
+    faceCanvas('#ffffff','#bff3ee','#69dcdc'),faceCanvas('#0d1e2e','#377b88','#69dcdc'),
+    faceCanvas('#bff3ee','#69dcdc','#377b88'),faceCanvas('#0d1e2e','#377b88','#69dcdc')
+  ]);envTex.needsUpdate=true;
+
+  // переливающаяся лицевая грань
+  var sc=document.createElement('canvas');sc.width=512;sc.height=128;var sx=sc.getContext('2d');
+  (function(){var g=sx.createLinearGradient(0,0,512,0);g.addColorStop(0,'#2f6f7c');g.addColorStop(.32,'#69dcdc');
+    g.addColorStop(.5,'#bff3ee');g.addColorStop(.68,'#69dcdc');g.addColorStop(1,'#2f6f7c');sx.fillStyle=g;sx.fillRect(0,0,512,128);})();
+  var shimTex=new THREE.CanvasTexture(sc);shimTex.wrapS=THREE.RepeatWrapping;
+
+  function mat(col,rough,met){return new THREE.MeshStandardMaterial({color:col,metalness:met,roughness:rough,envMap:envTex,envMapIntensity:1.15});}
+  var side=mat(0x205058,0.3,0.65), top=mat(0x4f9aa3,0.32,0.55), sideD=mat(0x163b42,0.3,0.7);
+  var front=new THREE.MeshStandardMaterial({map:shimTex,emissive:0x1b6f73,emissiveMap:shimTex,emissiveIntensity:0.45,metalness:0.25,roughness:0.4});
+  var mats=[side,side,top,sideD,front,side];  // [+x,-x,+y,-y,+z,-z]
+
+  var geo=new THREE.BoxGeometry(2.4,2.4,2.4);
+  var group=new THREE.Group();
+  var cube=new THREE.Mesh(geo,mats);group.add(cube);
+
+  var edges=new THREE.LineSegments(new THREE.EdgesGeometry(geo),
+            new THREE.LineBasicMaterial({color:0x0d1e2e,transparent:true,opacity:0.5}));
+  cube.add(edges);
+
+  // чёрный логотип на лицевой грани
+  var lc=document.createElement('canvas');lc.width=lc.height=512;var lx=lc.getContext('2d');
+  function drawLogo(){lx.clearRect(0,0,512,512);lx.fillStyle='#07090b';
+    lx.font='900 188px "Golos Text",system-ui,sans-serif';lx.textAlign='center';lx.textBaseline='middle';
+    lx.fillText('pirus.',256,300);}
+  drawLogo();
+  var logoTex=new THREE.CanvasTexture(lc);
+  var logo=new THREE.Mesh(new THREE.PlaneGeometry(2.05,2.05),new THREE.MeshBasicMaterial({map:logoTex,transparent:true}));
+  logo.position.z=1.215;cube.add(logo);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){drawLogo();logoTex.needsUpdate=true;});
+
+  group.scale.setScalar(0.4);   // размер куба
+  scene.add(group);
+
+  // свет для светлой сцены
+  scene.add(new THREE.AmbientLight(0xbcccd6,1.0));
+  var d=new THREE.DirectionalLight(0xffffff,1.15);d.position.set(3,5,4);scene.add(d);
+  var p1=new THREE.PointLight(0x69dcdc,1.3,40);p1.position.set(-5,2,4);scene.add(p1);
+  var p2=new THREE.PointLight(0xbff3ee,0.9,40);p2.position.set(4,-3,5);scene.add(p2);
+
+  // ——— физика: магнит к курсору + водяная инерция + дрейф + кувыркание
+  var mx=0,my=0,px=0,py=0,vx=0,vy=0,t=0;
+  if(!reduce)addEventListener('mousemove',function(e){mx=e.clientX/innerWidth-.5;my=e.clientY/innerHeight-.5;});
+
+  function loop(){
+    t+=0.006;
+    // цель = курсор (магнит) + тихий дрейф, когда мышь стоит
+    var tgtX=mx*3.8 + Math.sin(t*0.45)*1.4 + Math.sin(t*0.19)*0.8;
+    var tgtY=-my*2.2 + Math.sin(t*0.37)*0.9 + Math.cos(t*0.27)*0.55;
+    // пружина с сильным затуханием = «в воде»: плывёт, проскакивает, догоняет
+    vx+=(tgtX-px)*0.012; vx*=0.90; px+=vx;
+    vy+=(tgtY-py)*0.012; vy*=0.90; py+=vy;
+    group.position.set(px,py,0);
+    // кувыркание: постоянное мягкое + крен в сторону движения
+    group.rotation.y+=0.0042 + vx*0.05;
+    group.rotation.x+=0.0022 - vy*0.05;
+    shimTex.offset.x-=0.004;
+    renderer.render(scene,camera);
+    if(!reduce)requestAnimationFrame(loop);
+  }
+  if(reduce){group.position.set(1.2,0.4,0);group.rotation.set(-0.4,-0.6,0);renderer.render(scene,camera);}else{loop();}
+})();
+</script>
+</body></html>

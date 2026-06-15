@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ru"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pirus — полная страница (по структуре dasweb, белая тема)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+<style>
+  /* ===========================================================
+     PIRUS — полная страница по структуре dasweb.ca, белая тема.
+     Цвета сняты с pirus-agency.by: #69dcdc / #377b88 / #0d1e2e
+     Шрифт сайта: Golos Text. Контент — Pirus.
+     =========================================================== */
+  :root{
+    --bg:#ffffff; --bg-alt:#f4f6f6; --surface:#ffffff; --ink:#0d1e2e;
+    --muted:#5f696d; --line:rgba(13,30,46,.10); --line-soft:rgba(13,30,46,.06);
+    --accent:#69dcdc; --accent-deep:#377b88; --maxw:1240px; --ease:cubic-bezier(.16,1,.3,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Golos Text',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding-inline:clamp(20px,5vw,56px);}
+  .eyebrow{font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-deep);}
+  .h2{font-size:clamp(2rem,4.6vw,3.6rem);font-weight:800;line-height:1.06;letter-spacing:-.03em;}
+  .h2 .ac{color:var(--accent-deep);}
+  .lead{color:var(--muted);font-size:1.08rem;max-width:62ch;}
+  .btn{display:inline-flex;align-items:center;gap:10px;height:54px;padding:0 30px;border-radius:999px;font-weight:700;font-size:16px;transition:transform .2s var(--ease),background .25s var(--ease),box-shadow .25s var(--ease);}
+  .btn-primary{background:var(--accent);color:var(--ink);box-shadow:0 10px 30px rgba(105,220,220,.45);}
+  .btn-primary:hover{background:#7fe6e6;box-shadow:0 14px 40px rgba(105,220,220,.6);}
+  .btn-primary:active{transform:translateY(1px);}
+  .btn-ghost{border:1px solid var(--line);color:var(--ink);}
+  .btn-ghost:hover{border-color:rgba(13,30,46,.3);background:rgba(13,30,46,.03);}
+
+  /* loader */
+  .loader{position:fixed;inset:0;z-index:200;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;transition:opacity .8s var(--ease);}
+  .loader.done{opacity:0;pointer-events:none;}
+  .loader .w{font-weight:800;font-size:clamp(1.3rem,3vw,1.8rem);} .loader .w .d{color:var(--accent-deep);}
+  .loader .pct{font-weight:800;font-size:clamp(4rem,15vw,9rem);letter-spacing:-.05em;line-height:.9;font-variant-numeric:tabular-nums;} .loader .pct .s{color:var(--accent-deep);}
+  .loader .track{width:min(220px,60vw);height:2px;background:rgba(13,30,46,.1);overflow:hidden;border-radius:2px;} .loader .track .f{height:100%;width:0;background:var(--accent);}
+
+  /* top bar */
+  .topbar{background:var(--ink);color:#cfe9e9;font-size:13px;}
+  .topbar .wrap{display:flex;justify-content:space-between;align-items:center;height:38px;}
+  .topbar a{color:#cfe9e9;margin-left:16px;opacity:.85;}.topbar a:hover{opacity:1;color:var(--accent);}
+
+  /* nav */
+  header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.9);backdrop-filter:blur(14px);border-bottom:1px solid var(--line-soft);transition:box-shadow .3s var(--ease);}
+  header.scrolled{box-shadow:0 8px 30px rgba(13,30,46,.06);}
+  .nav{height:72px;display:flex;align-items:center;justify-content:space-between;gap:32px;}
+  .brand{font-weight:800;font-size:24px;letter-spacing:-.02em;} .brand .d{color:var(--accent-deep);}
+  .nav-links{display:flex;gap:30px;list-style:none;}
+  .nav-links a{font-size:15px;font-weight:600;color:var(--muted);}.nav-links a:hover{color:var(--ink);}
+  .burger{display:none;width:44px;height:44px;border:1px solid var(--line);border-radius:10px;background:none;cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:5px;}
+  .burger span{width:18px;height:2px;background:var(--ink);}
+
+  /* hero */
+  .hero{position:relative;text-align:center;padding:clamp(70px,11vw,130px) 0 clamp(60px,9vw,110px);overflow:hidden;}
+  .hero::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 50% at 50% 24%,rgba(105,220,220,.16),transparent 65%);pointer-events:none;}
+  .hero .inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;}
+  .hero h1{font-size:clamp(2.6rem,7vw,5.8rem);font-weight:900;line-height:1.02;letter-spacing:-.04em;max-width:18ch;margin-top:22px;}
+  .hero h1 .ac{color:var(--accent-deep);}
+  .hero p{margin-top:24px;font-size:clamp(1.1rem,2vw,1.45rem);color:var(--muted);font-weight:500;max-width:34ch;}
+  .hero .cta{margin-top:40px;display:flex;gap:14px;flex-wrap:wrap;justify-content:center;}
+
+  /* generic section */
+  section.block{padding-block:clamp(70px,10vw,130px);}
+  .alt{background:var(--bg-alt);}
+  .grid2{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center;}
+  .bullets{list-style:none;margin-top:24px;display:flex;flex-direction:column;gap:14px;}
+  .bullets li{display:flex;gap:12px;align-items:flex-start;font-weight:600;}
+  .bullets i{color:var(--accent-deep);font-size:22px;flex:none;margin-top:2px;}
+  .media{aspect-ratio:4/3;border-radius:20px;background:linear-gradient(150deg,rgba(105,220,220,.22),rgba(55,123,136,.12));border:1px solid var(--line-soft);display:flex;align-items:center;justify-content:center;color:var(--accent-deep);font-size:64px;}
+
+  /* marquee */
+  .marquee{overflow:hidden;border-block:1px solid var(--line-soft);padding:24px 0;background:var(--ink);}
+  .mq-track{display:inline-flex;white-space:nowrap;animation:scroll 32s linear infinite;}
+  .mq-track span{font-size:clamp(1.3rem,3vw,2.2rem);font-weight:800;color:#fff;padding:0 30px;letter-spacing:-.02em;}
+  .mq-track span::after{content:"·";color:var(--accent);margin-left:60px;}
+  @keyframes scroll{to{transform:translateX(-50%);}}
+
+  /* services grid */
+  .svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:48px;}
+  .svc{background:var(--surface);border:1px solid var(--line-soft);border-radius:18px;padding:30px;transition:transform .35s var(--ease),box-shadow .35s var(--ease);}
+  .svc:hover{transform:translateY(-6px);box-shadow:0 24px 54px rgba(13,30,46,.10);}
+  .svc .ic{font-size:34px;color:var(--accent-deep);}
+  .svc h3{font-size:1.3rem;font-weight:700;margin-top:18px;letter-spacing:-.02em;}
+  .svc p{margin-top:10px;color:var(--muted);font-size:.98rem;}
+
+  /* tagline strip */
+  .tagline{text-align:center;padding:clamp(70px,10vw,120px) 0;}
+  .tagline h2{font-size:clamp(2.2rem,6vw,5rem);font-weight:900;letter-spacing:-.04em;line-height:1.05;}
+  .tagline h2 span{color:var(--accent-deep);}
+
+  /* stats */
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);border-radius:20px;overflow:hidden;margin-top:48px;}
+  .stat{background:var(--surface);padding:40px 30px;}
+  .stat .n{font-size:clamp(2.2rem,5vw,3.4rem);font-weight:900;letter-spacing:-.04em;line-height:1;} .stat .n .u{color:var(--accent-deep);}
+  .stat .l{margin-top:12px;color:var(--muted);max-width:24ch;}
+
+  /* faq */
+  .faq{margin-top:44px;border-top:1px solid var(--line);}
+  .qa{border-bottom:1px solid var(--line);}
+  .qa button{width:100%;text-align:left;background:none;border:none;cursor:pointer;font-family:inherit;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:26px 4px;font-size:clamp(1.05rem,2vw,1.35rem);font-weight:700;color:var(--ink);}
+  .qa button i{color:var(--accent-deep);font-size:24px;transition:transform .3s var(--ease);flex:none;}
+  .qa.open button i{transform:rotate(45deg);}
+  .qa .ans{max-height:0;overflow:hidden;transition:max-height .4s var(--ease);}
+  .qa .ans p{padding:0 4px 26px;color:var(--muted);max-width:80ch;}
+
+  /* blog */
+  .posts{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:48px;}
+  .post{background:var(--surface);border:1px solid var(--line-soft);border-radius:18px;overflow:hidden;transition:transform .35s var(--ease),box-shadow .35s var(--ease);}
+  .post:hover{transform:translateY(-6px);box-shadow:0 24px 54px rgba(13,30,46,.10);}
+  .post img{width:100%;height:190px;object-fit:cover;display:block;filter:saturate(.85);}
+  .post .body{padding:22px;}
+  .post .tag{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-deep);}
+  .post h3{font-size:1.2rem;font-weight:700;margin-top:10px;letter-spacing:-.02em;line-height:1.25;}
+
+  /* reviews */
+  .review{max-width:760px;margin:44px auto 0;background:var(--surface);border:1px solid var(--line-soft);border-radius:20px;padding:36px;text-align:center;box-shadow:0 24px 60px rgba(13,30,46,.07);}
+  .stars{color:#f5b301;font-size:22px;letter-spacing:3px;}
+  .review p{margin-top:18px;font-size:1.15rem;font-weight:500;}
+  .review .who{margin-top:18px;font-weight:700;} .review .who span{color:var(--muted);font-weight:500;}
+
+  /* CTA */
+  .cta-final{background:var(--ink);color:#fff;border-radius:28px;text-align:center;padding:clamp(50px,8vw,90px) clamp(20px,5vw,60px);margin-block:clamp(40px,7vw,90px);}
+  .cta-final h2{font-size:clamp(2rem,5vw,3.6rem);font-weight:900;letter-spacing:-.03em;line-height:1.06;}
+  .cta-final h2 span{color:var(--accent);}
+  .cta-final p{color:#aab9bd;margin-top:16px;max-width:46ch;margin-inline:auto;}
+  .cta-final .btn{margin-top:32px;}
+
+  /* footer */
+  footer{background:var(--ink);color:#aab9bd;padding:70px 0 36px;}
+  .foot{display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px;}
+  footer .brand{color:#fff;font-size:26px;}
+  footer p{margin-top:16px;max-width:42ch;font-size:.96rem;}
+  footer h4{color:#fff;font-size:14px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px;}
+  footer ul{list-style:none;display:flex;flex-direction:column;gap:10px;font-size:.96rem;}
+  footer a:hover{color:var(--accent);}
+  .copy{margin-top:46px;padding-top:24px;border-top:1px solid rgba(255,255,255,.1);font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .8s var(--ease),transform .8s var(--ease);}
+  .reveal.in{opacity:1;transform:none;}
+
+  /* mobile menu */
+  .mm{display:none;position:fixed;inset:110px 0 auto 0;z-index:49;background:rgba(255,255,255,.98);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding:14px 0 24px;}
+  .mm.open{display:block;} .mm ul{list-style:none;} .mm a{display:block;padding:14px clamp(20px,5vw,56px);font-size:18px;font-weight:600;border-bottom:1px solid var(--line-soft);}
+
+  @media (max-width:900px){
+    .nav-links{display:none;} .burger{display:flex;}
+    .grid2{grid-template-columns:1fr;gap:32px;}
+    .svc-grid,.posts{grid-template-columns:1fr 1fr;} .stats{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width:600px){ .svc-grid,.posts,.stats{grid-template-columns:1fr;} }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto;} .reveal{opacity:1;transform:none;transition:none;}
+    .mq-track{animation:none;} .loader{transition:none;}
+  }
+</style></head><body>
+
+<!-- ЗАГРУЗЧИК -->
+<div class="loader" id="loader">
+  <div class="w">PIRUS<span class="d">.</span></div>
+  <div class="pct"><span id="pct">0</span><span class="s">%</span></div>
+  <div class="track"><div class="f" id="fill"></div></div>
+</div>
+
+<!-- ВЕРХНЯЯ ПАНЕЛЬ -->
+<div class="topbar"><div class="wrap">
+  <span>Минск · работаем по всему миру</span>
+  <span>Мы в соцсетях: <a href="#">TG</a><a href="#">VK</a><a href="#">IG</a></span>
+</div></div>
+
+<!-- ШАПКА -->
+<header id="hdr"><div class="wrap nav">
+  <a href="#" class="brand">PIRUS<span class="d">.</span></a>
+  <nav><ul class="nav-links">
+    <li><a href="#">Кейсы</a></li><li><a href="#services">Услуги</a></li><li><a href="#about">О нас</a></li><li><a href="#blog">Блог</a></li><li><a href="#">Контакты</a></li>
+  </ul></nav>
+  <a href="#cta" class="btn btn-primary" style="height:46px;padding:0 22px;font-size:15px;box-shadow:none">Оставить заявку</a>
+  <button class="burger" id="burger" aria-label="Меню"><span></span><span></span><span></span></button>
+</div></header>
+<div class="mm" id="mm"><ul>
+  <li><a href="#">Кейсы</a></li><li><a href="#services">Услуги</a></li><li><a href="#about">О нас</a></li><li><a href="#blog">Блог</a></li><li><a href="#">Контакты</a></li>
+</ul></div>
+
+<!-- HERO -->
+<section class="hero"><div class="wrap inner">
+  <div class="eyebrow">Агентство Pirus</div>
+  <h1>Продвижение и разработка <span class="ac">сайтов</span></h1>
+  <p>Преобразим ваш сайт в источник дохода!</p>
+  <div class="cta">
+    <a href="#cta" class="btn btn-primary"><i class="ph ph-arrow-right"></i>Оставить заявку</a>
+    <a href="#" class="btn btn-ghost">Наши кейсы</a>
+  </div>
+</div></section>
+
+<!-- О НАС / СОЗДАНО ДЛЯ РОСТА -->
+<section class="block" id="about"><div class="wrap grid2">
+  <div class="reveal">
+    <div class="eyebrow">Добро пожаловать в Pirus</div>
+    <h2 class="h2" style="margin-top:14px">Создано для <span class="ac">роста</span> вашего бизнеса</h2>
+    <p class="lead" style="margin-top:20px">Pirus — агентство SEO и разработки сайтов из Минска. Мы соединяем выверенный дизайн, работающий код и продвижение в поиске и нейроответах, чтобы превратить ваш сайт в источник дохода и заявок.</p>
+    <ul class="bullets">
+      <li><i class="ph ph-check-circle"></i>Выверенный дизайн и удобство для пользователя</li>
+      <li><i class="ph ph-check-circle"></i>Чистый код и быстрые, масштабируемые сайты</li>
+      <li><i class="ph ph-check-circle"></i>SEO-стратегии, которые дают измеримый результат</li>
+    </ul>
+    <a href="#about" class="btn btn-ghost" style="margin-top:30px">Подробнее о нас</a>
+  </div>
+  <div class="media reveal"><i class="ph ph-rocket-launch"></i></div>
+</div></section>
+
+<!-- ПОЧЕМУ МЫ -->
+<section class="block alt"><div class="wrap">
+  <div class="reveal" style="max-width:760px">
+    <div class="eyebrow">Почему выбирают нас</div>
+    <h2 class="h2" style="margin-top:14px">Сайты, которые <span class="ac">работают</span></h2>
+    <p class="lead" style="margin-top:20px">Мы уверены: сайт должен не просто привлекать внимание, а приносить измеримый результат. Делаем сайты, удобные для людей и понятные поисковым системам, с фокусом на конверсию и решения на основе данных.</p>
+    <p class="lead" style="margin-top:16px">В основе всего — SEO, фундамент видимости. Глубоко прорабатываем запросы, оптимизацию страниц и контент, чтобы поднять позиции и привести целевой трафик. Вы получаете не просто сайт, а партнёра по росту вдолгую.</p>
+  </div>
+</div></section>
+
+<!-- ДОМИНИРОВАНИЕ В ВЫДАЧЕ -->
+<section class="block"><div class="wrap grid2">
+  <div class="media reveal" style="background:linear-gradient(150deg,rgba(55,123,136,.18),rgba(105,220,220,.1))"><i class="ph ph-trend-up"></i></div>
+  <div class="reveal">
+    <div class="eyebrow">Выше конкурентов</div>
+    <h2 class="h2" style="margin-top:14px">Доминируйте в <span class="ac">выдаче</span></h2>
+    <p class="lead" style="margin-top:20px">Ваш сайт должен стоять выше конкурентов. Мы оптимизируем и удобство, и позиции в поиске, чтобы бизнес вёл за собой: стабильный трафик, заявки и цифровой авторитет. С Pirus вы не просто участвуете в гонке — вы её возглавляете.</p>
+    <a href="#" class="btn btn-ghost" style="margin-top:28px">Смотреть кейсы</a>
+  </div>
+</div></section>
+
+<!-- БЕГУЩАЯ СТРОКА -->
+<div class="marquee"><div class="mq-track">
+  <span>SEO</span><span>Разработка сайтов</span><span>GEO-продвижение</span><span>ТОП-3 Яндекс</span><span>Комплексный аудит</span><span>Техническое обслуживание</span>
+  <span>SEO</span><span>Разработка сайтов</span><span>GEO-продвижение</span><span>ТОП-3 Яндекс</span><span>Комплексный аудит</span><span>Техническое обслуживание</span>
+</div></div>
+
+<!-- УСЛУГИ -->
+<section class="block" id="services"><div class="wrap">
+  <div class="reveal" style="max-width:680px">
+    <div class="eyebrow">Что мы делаем</div>
+    <h2 class="h2" style="margin-top:14px">Цифровые решения для вашего <span class="ac">роста</span></h2>
+  </div>
+  <div class="svc-grid">
+    <div class="svc reveal"><div class="ic"><i class="ph ph-trend-up"></i></div><h3>SEO</h3><p>Максимизируем видимость вашего сайта, обеспечивая стабильный прирост целевого трафика.</p></div>
+    <div class="svc reveal"><div class="ic"><i class="ph ph-code"></i></div><h3>Разработка сайта</h3><p>Полный цикл, от идеи до поддержки, с фокусом на эффективность для пользователей и поиска.</p></div>
+    <div class="svc reveal"><div class="ic"><i class="ph ph-seal-check"></i></div><h3>SEO с гарантией результата</h3><p>Обещаем конкретный результат и фиксируем его в договоре.</p></div>
+    <div class="svc reveal"><div class="ic"><i class="ph ph-trophy"></i></div><h3>Гарантированный ТОП-3 Яндекс</h3><p>Обеспечиваем вывод сайта в ТОП-3 Яндекса за короткий срок.</p></div>
+    <div class="svc reveal"><div class="ic"><i class="ph ph-clipboard-text"></i></div><h3>Комплексный аудит сайта</h3><p>Всесторонний анализ с понятными рекомендациями к росту.</p></div>
+    <div class="svc reveal"><div class="ic"><i class="ph ph-shield-check"></i></div><h3>Техническое обслуживание</h3><p>Обеспечиваем стабильную и безопасную работу вашего сайта.</p></div>
+  </div>
+  <div class="reveal" style="margin-top:36px"><a href="#services" class="btn btn-ghost">Все услуги</a></div>
+</div></section>
+
+<!-- СЛОГАН -->
+<div class="tagline alt"><div class="wrap"><h2>Честно. Результативно. <span>С гарантией.</span></h2></div></div>
+
+<!-- ЦИФРЫ -->
+<section class="block"><div class="wrap">
+  <div class="reveal" style="max-width:680px"><div class="eyebrow">Результаты</div><h2 class="h2" style="margin-top:14px">Цифры, которыми мы <span class="ac">гордимся</span></h2></div>
+  <div class="stats">
+    <div class="stat reveal"><div class="n">3,5 <span class="u">года</span></div><div class="l">Средний CL наших клиентов</div></div>
+    <div class="stat reveal"><div class="n">891 <span class="u">млн</span></div><div class="l">Эффект нашей работы для клиентов за 2024 год</div></div>
+    <div class="stat reveal"><div class="n">192 <span class="u">сайта</span></div><div class="l">Получили качественное SEO благодаря нам</div></div>
+    <div class="stat reveal"><div class="n">9 <span class="u">лет</span></div><div class="l">Мы работаем вместе, как одна команда</div></div>
+    <div class="stat reveal"><div class="n">92<span class="u">%</span></div><div class="l">Клиентов достигли KPI за прошлый год</div></div>
+    <div class="stat reveal"><div class="n">57 <span class="u">млн</span></div><div class="l">Сэкономили клиентам на контекстной рекламе</div></div>
+  </div>
+</div></section>
+
+<!-- FAQ -->
+<section class="block alt"><div class="wrap">
+  <div class="reveal" style="max-width:680px"><div class="eyebrow">Частые вопросы</div><h2 class="h2" style="margin-top:14px">Остались вопросы? У нас есть <span class="ac">ответы</span></h2></div>
+  <div class="faq reveal">
+    <div class="qa"><button>Кто такие Pirus?<i class="ph ph-plus"></i></button><div class="ans"><p>Pirus — агентство SEO и разработки сайтов из Минска. За 9 лет мы вывели в качественное SEO 192 сайта. Помогаем бизнесу расти за счёт продвижения в поиске, нейроответах (GEO) и сильных, удобных сайтов.</p></div></div>
+    <div class="qa"><button>Какие услуги вы оказываете?<i class="ph ph-plus"></i></button><div class="ans"><p>SEO, разработка сайтов, GEO-продвижение, гарантированный ТОП-3 Яндекс, комплексный аудит и техническое обслуживание сайтов. Можем вести проект целиком или подключиться на отдельном этапе.</p></div></div>
+    <div class="qa"><button>С какими сферами вы работали?<i class="ph ph-plus"></i></button><div class="ans"><p>Интернет-магазины, стартапы, заводы, строительные компании, стоматология, медицинские центры, юридические услуги и многое другое. Опыт в разных нишах помогает быстро находить рабочие решения.</p></div></div>
+    <div class="qa"><button>Как понять, что это окупится?<i class="ph ph-plus"></i></button><div class="ans"><p>Работаем по метрикам и KPI: 92% клиентов достигли своих целей за прошлый год. По SEO даём гарантию результата и фиксируем её в договоре, чтобы каждый вложенный рубль работал на рост.</p></div></div>
+  </div>
+</div></section>
+
+<!-- БЛОГ -->
+<section class="block" id="blog"><div class="wrap">
+  <div class="reveal" style="max-width:680px"><div class="eyebrow">Блог</div><h2 class="h2" style="margin-top:14px">Свежие <span class="ac">материалы</span></h2></div>
+  <div class="posts">
+    <a href="#" class="post reveal"><img src="https://picsum.photos/seed/pirus-ai-seo/600/400" alt=""><div class="body"><div class="tag">SEO · AI</div><h3>Как оптимизировать сайт под AI-поиск и нейроответы</h3></div></a>
+    <a href="#" class="post reveal"><img src="https://picsum.photos/seed/pirus-content/600/400" alt=""><div class="body"><div class="tag">Контент</div><h3>Как собрать SEO-контент, который выводит в ТОП</h3></div></a>
+    <a href="#" class="post reveal"><img src="https://picsum.photos/seed/pirus-process/600/400" alt=""><div class="body"><div class="tag">Дизайн</div><h3>Дизайн-процесс Pirus: от брифа до готового сайта</h3></div></a>
+  </div>
+</div></section>
+
+<!-- ОТЗЫВЫ -->
+<section class="block alt"><div class="wrap">
+  <div class="reveal" style="max-width:680px;margin:0 auto;text-align:center"><div class="eyebrow">Отзывы клиентов</div><h2 class="h2" style="margin-top:14px">Нам <span class="ac">доверяют</span></h2></div>
+  <div class="review reveal">
+    <div class="stars">★★★★★</div>
+    <p>«Искали агентство по SEO и разработке — Pirus выделились сразу. Помогли с сайтом, контентом и продвижением. Уже после первого месяца стало больше трафика, звонков и заявок. Редко встретишь команду, которая одинаково сильна и в дизайне, и в маркетинге.»</p>
+    <div class="who">Александр К. <span>· пример отзыва</span></div>
+  </div>
+</div></section>
+
+<!-- ПРИЗЫВ -->
+<section class="wrap" id="cta"><div class="cta-final reveal">
+  <h2>Готовы вывести сайт <span>в ТОП?</span> Давайте обсудим</h2>
+  <p>Оставьте заявку — разберём ваш проект, покажем точки роста и предложим план.</p>
+  <a href="#" class="btn btn-primary"><i class="ph ph-arrow-right"></i>Оставить заявку</a>
+</div></section>
+
+<!-- ПОДВАЛ -->
+<footer><div class="wrap">
+  <div class="foot">
+    <div>
+      <div class="brand">PIRUS<span style="color:var(--accent)">.</span></div>
+      <p>Агентство SEO и разработки сайтов из Минска. Делаем сайты и продвижение, которые приносят бизнесу заявки и доход.</p>
+    </div>
+    <div>
+      <h4>Услуги</h4>
+      <ul><li><a href="#">SEO</a></li><li><a href="#">Разработка сайтов</a></li><li><a href="#">GEO-продвижение</a></li><li><a href="#">Аудит сайта</a></li><li><a href="#">Техническое обслуживание</a></li></ul>
+    </div>
+    <div>
+      <h4>Контакты</h4>
+      <ul><li>Минск, Беларусь</li><li><a href="#">+375 (__) ___-__-__</a></li><li><a href="#">hello@pirus-agency.by</a></li><li><a href="#">Telegram · VK · Instagram</a></li></ul>
+    </div>
+  </div>
+  <div class="copy"><span>© 2016–2026 Pirus. Все права защищены.</span><span>Концепт редизайна</span></div>
+</div></footer>
+
+<script>
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // загрузчик
+  var loader=document.getElementById('loader'),pctEl=document.getElementById('pct'),fill=document.getElementById('fill');
+  function fin(){loader.classList.add('done');}
+  if(reduce){pctEl.textContent='100';fill.style.width='100%';setTimeout(fin,300);}
+  else{var p=0;var t=setInterval(function(){p+=Math.random()*9+4;if(p>=100){p=100;clearInterval(t);setTimeout(fin,350);}pctEl.textContent=Math.floor(p);fill.style.width=p+'%';},85);}
+  // шапка
+  var hdr=document.getElementById('hdr');
+  addEventListener('scroll',function(){hdr.classList.toggle('scrolled',scrollY>10);},{passive:true});
+  // меню
+  var burger=document.getElementById('burger'),mm=document.getElementById('mm');
+  burger.addEventListener('click',function(){mm.classList.toggle('open');});
+  mm.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){mm.classList.remove('open');});});
+  // FAQ
+  document.querySelectorAll('.qa button').forEach(function(b){
+    b.addEventListener('click',function(){
+      var qa=b.parentElement,ans=qa.querySelector('.ans'),open=qa.classList.contains('open');
+      document.querySelectorAll('.qa').forEach(function(x){x.classList.remove('open');x.querySelector('.ans').style.maxHeight=null;});
+      if(!open){qa.classList.add('open');ans.style.maxHeight=ans.scrollHeight+'px';}
+    });
+  });
+  // reveal
+  if(!reduce){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:0.12});
+    document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});}
+  else{document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('in');});}
+</script>
+</body></html>

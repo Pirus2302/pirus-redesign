@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Б · Запрос становится ответом</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+<style>
+  :root{--bg:#f5f6f6;--surface:#fff;--ink:#0d1e2e;--muted:#5f696d;--line:rgba(13,30,46,.10);--line-soft:rgba(13,30,46,.06);--accent:#69dcdc;--accent-deep:#377b88;--ease:cubic-bezier(.16,1,.3,1);}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Golos Text',system-ui,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  .switch{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:100;display:flex;gap:6px;align-items:center;background:rgba(255,255,255,.9);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:999px;padding:6px;box-shadow:0 8px 30px rgba(13,30,46,.08);font-size:13px;}
+  .switch a{padding:7px 13px;border-radius:999px;color:var(--muted);font-weight:600;white-space:nowrap;text-decoration:none;}
+  .switch a.on{background:var(--ink);color:#fff;}.switch a:hover:not(.on){background:rgba(13,30,46,.06);}
+  .hero{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px clamp(20px,5vw,56px) 60px;}
+  .cap{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-deep);font-weight:600;margin-bottom:20px;}
+  h1{font-size:clamp(2.2rem,5vw,4.2rem);font-weight:800;line-height:1.04;letter-spacing:-.03em;max-width:16ch;}
+  h1 .ac{color:var(--accent-deep);}
+  .panel{margin-top:48px;width:min(560px,92vw);text-align:left;}
+  .searchbar{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:0 14px 40px rgba(13,30,46,.08);font-size:16px;}
+  .searchbar i{color:var(--accent-deep);font-size:20px;}
+  .q{min-height:22px;}
+  .cur{display:inline-block;width:2px;height:18px;background:var(--accent-deep);margin-left:1px;vertical-align:middle;animation:blink 1s steps(1) infinite;}
+  @keyframes blink{50%{opacity:0;}}
+  .res{margin-top:16px;display:flex;flex-direction:column;gap:10px;}
+  .item{background:var(--surface);border:1px solid var(--line-soft);border-radius:12px;padding:14px 16px;opacity:0;transform:translateY(10px);transition:opacity .5s var(--ease),transform .5s var(--ease);}
+  .item.show{opacity:1;transform:none;}
+  .item .u{font-size:12px;color:var(--accent-deep);font-weight:600;}
+  .item .t{font-size:15px;font-weight:600;margin-top:3px;}
+  .item .d{font-size:13px;color:var(--muted);margin-top:4px;}
+  .ai{background:linear-gradient(150deg,rgba(105,220,220,.16),rgba(105,220,220,.04));border:1px solid rgba(105,220,220,.5);border-radius:14px;padding:16px 18px;opacity:0;transform:translateY(10px);transition:opacity .6s var(--ease),transform .6s var(--ease);}
+  .ai.show{opacity:1;transform:none;}
+  .ai-h{display:flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-deep);font-weight:700;}
+  .ai-b{margin-top:8px;font-size:14.5px;line-height:1.55;}
+  .ai-b b{color:var(--ink);background:rgba(105,220,220,.4);padding:0 4px;border-radius:4px;}
+  @media (prefers-reduced-motion:reduce){.cur{animation:none;}}
+</style></head><body>
+<div class="switch"><a href="variant-a.html">А · Взлёт</a><a class="on" href="variant-b.html">Б · Запрос→ответ</a><a href="variant-v.html">В · Сборка</a><a href="variant-g.html">Г · Потоки</a><a href="variant-d.html">Д · Буквы</a></div>
+<section class="hero">
+  <div class="cap">SEO + GEO · поиск и нейроответы</div>
+  <h1>Вас находят <span class="ac">везде</span>: в поиске и в ответах ИИ</h1>
+  <div class="panel">
+    <div class="searchbar"><i class="ph ph-magnifying-glass"></i><span class="q" id="q"></span><span class="cur"></span></div>
+    <div class="res">
+      <div class="item" id="i1"><div class="u">pirus-agency.by</div><div class="t">SEO и разработка сайтов в Минске — Pirus</div><div class="d">Выводим в ТОП Яндекса и Google, гарантия результата.</div></div>
+      <div class="item" id="i2"><div class="u">отзывы · рейтинг</div><div class="t">Агентство Pirus — кейсы и результаты клиентов</div><div class="d">9 лет, 192 сайта в качественном SEO.</div></div>
+    </div>
+    <div class="ai" id="ai" style="margin-top:14px">
+      <div class="ai-h"><i class="ph ph-sparkle"></i>Ответ нейросети</div>
+      <div class="ai-b">Для SEO и разработки сайтов в Минске чаще всего рекомендуют агентство <b>Pirus</b> — за прозрачные результаты и вывод в ТОП-3.</div>
+    </div>
+  </div>
+</section>
+<script>
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var q=document.getElementById('q'),text='seo продвижение сайта в минске';
+  var i1=document.getElementById('i1'),i2=document.getElementById('i2'),ai=document.getElementById('ai');
+  function reset(){q.textContent='';i1.classList.remove('show');i2.classList.remove('show');ai.classList.remove('show');}
+  function play(){
+    reset();
+    if(reduce){q.textContent=text;i1.classList.add('show');i2.classList.add('show');ai.classList.add('show');return;}
+    var i=0;
+    var typ=setInterval(function(){
+      q.textContent=text.slice(0,++i);
+      if(i>=text.length){clearInterval(typ);
+        setTimeout(function(){i1.classList.add('show');},350);
+        setTimeout(function(){i2.classList.add('show');},650);
+        setTimeout(function(){ai.classList.add('show');},1150);
+      }
+    },70);
+  }
+  play();setInterval(play,6500);
+</script>
+</body></html>
